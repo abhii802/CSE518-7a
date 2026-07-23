@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE 7th Sem &mdash; Project Lab Catalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1220;
+    --navy-2:#101B2D;
+    --grid-line:rgba(90,150,190,0.16);
+    --paper:#ECEEE7;
+    --paper-2:#E2E5DC;
+    --ink:#12161F;
+    --ink-soft:#4A5261;
+    --teal:#2AC3B0;
+    --teal-dim:#1C8E80;
+    --amber:#E8A23A;
+    --rule:#C9CDC0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--navy);
+    font-family:'Source Serif 4', serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--teal);color:#04231F;}
+
+  .app{
+    display:grid;
+    grid-template-columns: 340px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    background:
+      repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 28px),
+      var(--navy);
+    padding:28px 0 60px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    border-right:1px solid rgba(255,255,255,0.06);
+  }
+  .brand{
+    padding:0 24px 20px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    margin-bottom:10px;
+  }
+  .brand .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    color:var(--teal);
+    text-transform:uppercase;
+  }
+  .brand h1{
+    font-family:'Space Grotesk', sans-serif;
+    color:#F4F6F2;
+    font-size:22px;
+    line-height:1.25;
+    margin:8px 0 6px;
+    font-weight:600;
+  }
+  .brand p{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:#8B97A8;
+    margin:0;
+    line-height:1.6;
+  }
+  .tab-list{
+    list-style:none;
+    margin:14px 0 0;
+    padding:0 10px;
+  }
+  .tab-item{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:10px 12px;
+    border-radius:4px;
+    color:#C4CCD8;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13.5px;
+    line-height:1.35;
+    margin-bottom:2px;
+    transition:background .15s ease, color .15s ease;
+  }
+  .tab-item:hover{ background:rgba(42,195,176,0.08); color:#fff; }
+  .tab-item.active{
+    background:rgba(42,195,176,0.14);
+    color:#fff;
+    box-shadow:inset 3px 0 0 var(--teal);
+  }
+  .tab-item .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--teal);
+    flex:0 0 auto;
+    padding-top:1px;
+  }
+  .tab-item .tname{ flex:1; }
+  .tab-item .tdomain{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9.5px;
+    letter-spacing:0.04em;
+    color:#6C7789;
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+
+  /* ---------- MAIN ---------- */
+  .main{
+    background:var(--paper);
+    position:relative;
+    padding:56px 64px 90px;
+  }
+  .main::before, .main::after,
+  .corner-tl, .corner-br{
+    content:"";
+  }
+  .corner-frame{
+    position:absolute;
+    inset:24px;
+    pointer-events:none;
+  }
+  .corner-frame span{
+    position:absolute;
+    width:22px;
+    height:22px;
+    border:1.5px solid rgba(18,22,31,0.35);
+  }
+  .corner-frame .tl{ top:0; left:0; border-right:none; border-bottom:none; }
+  .corner-frame .tr{ top:0; right:0; border-left:none; border-bottom:none; }
+  .corner-frame .bl{ bottom:0; left:0; border-right:none; border-top:none; }
+  .corner-frame .br{ bottom:0; right:0; border-left:none; border-top:none; }
+
+  .charter{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    padding-bottom:26px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:34px;
+  }
+  .charter-left{ max-width:640px; }
+  .charter .code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    color:var(--teal-dim);
+    text-transform:uppercase;
+    margin-bottom:10px;
+    display:block;
+  }
+  .charter h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:34px;
+    line-height:1.15;
+    margin:0 0 14px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .charter .brief{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .stamp{
+    flex:0 0 auto;
+    width:118px;
+    height:118px;
+    border-radius:50%;
+    border:2px solid var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-8deg);
+    position:relative;
+  }
+  .stamp::before{
+    content:"";
+    position:absolute;
+    inset:6px;
+    border:1px dashed rgba(18,22,31,0.5);
+    border-radius:50%;
+  }
+  .stamp .stxt{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.08em;
+    line-height:1.5;
+    color:var(--ink);
+    text-transform:uppercase;
+  }
+  .stamp .sdur{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:20px;
+    font-weight:700;
+    display:block;
+    margin:2px 0;
+  }
+
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:36px;
+  }
+  .meta-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.02em;
+    color:var(--ink);
+    background:var(--paper-2);
+    border:1px solid var(--rule);
+    padding:7px 12px;
+    border-radius:3px;
+  }
+  .meta-chip b{ color:var(--teal-dim); }
+
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal-dim);
+    margin:0 0 16px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--rule);
+  }
+
+  .roles{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:44px;
+  }
+  .role-card{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:14px 16px;
+  }
+  .role-card .rn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .role-card .rt{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14.5px;
+    font-weight:600;
+    margin-top:4px;
+    color:var(--ink);
+  }
+
+  .timeline{
+    position:relative;
+    padding-left:2px;
+  }
+  .month-block{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:28px;
+    padding:26px 0;
+    border-top:1px solid var(--rule);
+  }
+  .month-block:first-child{ border-top:none; padding-top:0; }
+  .month-marker{
+    position:relative;
+  }
+  .month-marker .mno{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:40px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1;
+  }
+  .month-marker .mno span{ color:var(--teal); }
+  .month-marker .mlabel{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:6px;
+    display:block;
+  }
+  .month-content h4{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px;
+    margin:0 0 12px;
+    color:var(--ink);
+    font-weight:600;
+  }
+  .steps{
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+  .steps li{
+    position:relative;
+    padding-left:22px;
+    margin-bottom:9px;
+    font-size:15px;
+    line-height:1.55;
+    color:#242A35;
+  }
+  .steps li::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:8px;
+    width:7px;
+    height:7px;
+    background:var(--teal);
+    border-radius:1px;
+    transform:rotate(45deg);
+  }
+
+  .deliverable-note{
+    margin-top:44px;
+    padding:18px 22px;
+    background:var(--navy-2);
+    border-radius:6px;
+    color:#DCE3EC;
+  }
+  .deliverable-note .dl-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:8px;
+    display:block;
+  }
+  .deliverable-note p{ margin:0; font-size:14.5px; line-height:1.6; }
+
+  @media (max-width: 980px){
+    .app{ grid-template-columns:1fr; }
+    .sidebar{ height:auto; position:relative; }
+    .main{ padding:40px 22px 70px; }
+    .charter{ flex-direction:column; }
+    .roles{ grid-template-columns:repeat(2,1fr); }
+    .month-block{ grid-template-columns:1fr; gap:10px; }
+    .charter h2{ font-size:26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <span class="eyebrow">B.Tech CSE &middot; 7th Semester</span>
+      <h1>Project Lab Catalogue</h1>
+      <p>20 group projects &middot; 4 students/team &middot; 4-month build cycle</p>
+    </div>
+    <ul class="tab-list" id="tabList"></ul>
+  </nav>
+
+  <main class="main">
+    <div class="corner-frame">
+      <span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span>
+    </div>
+    <div id="content"></div>
+  </main>
+</div>
+
+<script>
+const PROJECTS = [
+{
+  code:"CSE-701", domain:"Artificial Intelligence", title:"AI Resume Screening Portal",
+  brief:"A web portal that parses uploaded resumes, scores candidates against a job description using NLP similarity, and ranks shortlists for a recruiter dashboard.",
+  stack:"Python, spaCy/scikit-learn, FastAPI, React, PostgreSQL",
+  roles:["Resume Parsing & NLP Engine","Ranking & Scoring Logic","Recruiter Dashboard (Frontend)","Backend API & Database"],
+  months:[
+    {label:"Foundation", title:"Requirement study & dataset preparation",
+      steps:["Study 15-20 sample job descriptions and resumes to identify common fields (skills, experience, education).",
+        "Collect an open resume dataset (e.g. Kaggle resume datasets) and clean it into a usable text corpus.",
+        "Finalise tech stack: Python for NLP pipeline, FastAPI for backend, React for dashboard, PostgreSQL for storage.",
+        "Design the database schema for candidates, jobs, and scores; draw the system architecture diagram."]},
+    {label:"Core Build", title:"Resume parsing & similarity engine",
+      steps:["Build a PDF/DOCX text extractor using PyMuPDF/python-docx.",
+        "Use spaCy for named-entity extraction (skills, education, years of experience).",
+        "Implement TF-IDF/embedding based similarity scoring between resume text and job description.",
+        "Expose parsing and scoring as REST endpoints via FastAPI; write unit tests for each endpoint."]},
+    {label:"Integration", title:"Dashboard, ranking & filters",
+      steps:["Build the React dashboard: job posting form, resume upload, ranked candidate list.",
+        "Add filters (minimum experience, required skill match %, education level).",
+        "Connect frontend to backend APIs; implement authentication for recruiter login.",
+        "Add explainability: show matched/missing skills per candidate on click."]},
+    {label:"Finish Line", title:"Testing, deployment & documentation",
+      steps:["Test with 50+ real-style resumes across 3 job roles; tune scoring weights.",
+        "Fix bugs, handle edge cases (scanned/image resumes, missing fields).",
+        "Deploy backend on Render/Railway and frontend on Vercel/Netlify (free tiers).",
+        "Prepare final report, architecture diagram, and a 10-minute demo video/PPT."]}
+  ]
+},
+{
+  code:"CSE-702", domain:"Blockchain", title:"Blockchain Secure Voting System",
+  brief:"A permissioned blockchain-based e-voting application ensuring tamper-proof votes, voter authentication, and transparent public result verification.",
+  stack:"Solidity, Hardhat/Truffle, Ethereum testnet (Sepolia)/Ganache, React, MetaMask",
+  roles:["Smart Contract Development","Voter Authentication Module","Frontend Voting Interface","Testing & Blockchain Deployment"],
+  months:[
+    {label:"Foundation", title:"Blockchain basics & design",
+      steps:["Study blockchain fundamentals, Ethereum, and Solidity syntax through official docs/tutorials.",
+        "Design the voting workflow: registration, candidate list, single-vote enforcement, result tally.",
+        "Set up local blockchain (Ganache) and development environment (Hardhat, Node.js, MetaMask).",
+        "Draw the smart contract data model: Voter struct, Candidate struct, mappings for vote tracking."]},
+    {label:"Core Build", title:"Smart contract development",
+      steps:["Write the Solidity voting contract with functions: registerVoter, vote, getResults, only-owner modifiers.",
+        "Implement checks preventing double voting and voting after deadline using block.timestamp.",
+        "Write Hardhat test scripts to validate contract logic (registration, voting, tallying).",
+        "Deploy contract to a local Ganache network and verify with test transactions."]},
+    {label:"Integration", title:"Frontend & authentication",
+      steps:["Build React UI for voter login (Aadhaar/roll-number based OTP simulation), candidate display, and vote casting.",
+        "Integrate MetaMask/Ethers.js so votes are signed and sent as blockchain transactions.",
+        "Build an admin panel to add candidates and close voting after the deadline.",
+        "Display live, publicly verifiable result count once voting ends."]},
+    {label:"Finish Line", title:"Testnet deployment & report",
+      steps:["Deploy the contract to a public testnet (Sepolia) using free faucet test ETH.",
+        "Conduct a mock election with 30+ test voters; record gas costs and transaction times.",
+        "Perform security review (reentrancy checks, access control) and fix any issues found.",
+        "Document architecture, contract ABI, and prepare the final demonstration."]}
+  ]
+},
+{
+  code:"CSE-703", domain:"Computer Vision", title:"Face Recognition Attendance System",
+  brief:"An automated classroom attendance system using real-time face detection and recognition through a webcam, logging attendance to a database with a teacher dashboard.",
+  stack:"Python, OpenCV, face_recognition/DeepFace, Flask, SQLite",
+  roles:["Face Detection & Enrollment Module","Recognition Engine & Matching","Attendance Backend & Database","Teacher Dashboard (Frontend)"],
+  months:[
+    {label:"Foundation", title:"Setup & face dataset collection",
+      steps:["Study face detection (Haar cascades/MTCNN) vs recognition (embeddings) concepts.",
+        "Set up Python environment with OpenCV, dlib/face_recognition, and Flask.",
+        "Build an enrollment script capturing 10-15 images per student to create face embeddings.",
+        "Design database schema: students, embeddings, attendance logs with timestamps."]},
+    {label:"Core Build", title:"Recognition pipeline",
+      steps:["Implement real-time webcam face detection and cropping using OpenCV.",
+        "Generate and store 128-d face embeddings per student using face_recognition library.",
+        "Implement matching logic comparing live captured face to stored embeddings with a distance threshold.",
+        "Mark attendance automatically once a match is confirmed, avoiding duplicate entries per session."]},
+    {label:"Integration", title:"Dashboard & session management",
+      steps:["Build Flask backend APIs for starting a session, live recognition feed, and fetching attendance.",
+        "Build a simple web dashboard showing live recognized faces and attendance list per class.",
+        "Add manual override option for teachers to correct mis-marked attendance.",
+        "Add export-to-Excel/CSV feature for monthly attendance reports."]},
+    {label:"Finish Line", title:"Accuracy testing & deployment",
+      steps:["Test recognition accuracy under varied lighting, angles, and with masks; tune thresholds.",
+        "Optimise frame processing rate for smoother real-time performance on a standard laptop webcam.",
+        "Deploy on a local machine/Raspberry Pi for classroom use; write setup instructions.",
+        "Prepare final documentation, accuracy report, and live demo."]}
+  ]
+},
+{
+  code:"CSE-704", domain:"Natural Language Processing", title:"Fake News Detection Engine",
+  brief:"A machine learning system that classifies news articles or headlines as real or fake, with a browser extension/web app for quick verification.",
+  stack:"Python, scikit-learn/BERT, Flask, Chrome Extension APIs, React",
+  roles:["Dataset Curation & Preprocessing","ML Model Training","Backend API Service","Browser Extension/Web App"],
+  months:[
+    {label:"Foundation", title:"Dataset & problem framing",
+      steps:["Download open fake/real news datasets (e.g. LIAR, Kaggle Fake News dataset).",
+        "Clean text data: remove HTML, stopwords, punctuation; perform exploratory data analysis.",
+        "Study TF-IDF and transformer-based text classification approaches.",
+        "Finalise architecture: preprocessing pipeline, model service, and client interface."]},
+    {label:"Core Build", title:"Model training & evaluation",
+      steps:["Train a baseline model (Logistic Regression/Naive Bayes with TF-IDF) and record accuracy.",
+        "Fine-tune a lightweight transformer (DistilBERT) for improved accuracy; compare both models.",
+        "Evaluate using precision, recall, F1-score, and confusion matrix on a held-out test set.",
+        "Save the best-performing model using joblib/HuggingFace format."]},
+    {label:"Integration", title:"API & client interface",
+      steps:["Build a Flask REST API that accepts text/URL and returns a fake/real probability score.",
+        "Build a simple React web app where users paste an article link or text for verification.",
+        "Optionally build a Chrome extension that highlights suspicious articles while browsing.",
+        "Add a confidence-based explanation showing top contributing words/phrases."]},
+    {label:"Finish Line", title:"Validation & release",
+      steps:["Test with recent real-world news articles not present in training data.",
+        "Handle edge cases: satire articles, very short headlines, non-English text.",
+        "Deploy API on a free cloud service and package the extension for local installation.",
+        "Compile final report comparing model performance and prepare demo."]}
+  ]
+},
+{
+  code:"CSE-705", domain:"Conversational AI", title:"AI College Helpdesk Chatbot",
+  brief:"An intelligent chatbot answering student queries about admissions, timetables, fees, and events, integrated into the college website with an admin knowledge-base editor.",
+  stack:"Python, Rasa/LangChain, FastAPI, React, MongoDB",
+  roles:["Intent & NLU Design","Dialogue Management Backend","Knowledge Base & Admin Panel","Chat Widget Frontend"],
+  months:[
+    {label:"Foundation", title:"Scope & intent design",
+      steps:["Collect 100+ frequently asked student questions across categories (fees, exams, hostel, events).",
+        "Define intents and entities (e.g. 'fee_query', 'exam_date', with entity 'semester').",
+        "Choose framework: Rasa for full NLU control, or LangChain + an LLM API for faster setup.",
+        "Design the conversation flow diagrams for top 10 query categories."]},
+    {label:"Core Build", title:"NLU training & dialogue logic",
+      steps:["Train the intent classifier and entity extractor with labelled example utterances.",
+        "Build dialogue management rules/stories handling multi-turn conversations and fallbacks.",
+        "Connect the bot to a MongoDB-backed knowledge base for dynamic answers (fee amounts, dates).",
+        "Implement a fallback-to-human-query logging mechanism for unanswered questions."]},
+    {label:"Integration", title:"Admin panel & website widget",
+      steps:["Build an admin panel where staff can add/edit FAQ answers without touching code.",
+        "Build an embeddable chat widget (React) for the college website with typing indicators.",
+        "Add support for quick-reply buttons for common queries (menu-driven shortcuts).",
+        "Integrate basic analytics: most-asked questions, unresolved query count."]},
+    {label:"Finish Line", title:"Testing & rollout",
+      steps:["Conduct testing with 20+ students asking varied real questions; measure intent accuracy.",
+        "Retrain the model on newly logged unanswered queries to close gaps.",
+        "Deploy backend and widget on a free hosting tier; embed on a sample college webpage.",
+        "Prepare documentation and a live demo covering both student and admin views."]}
+  ]
+},
+{
+  code:"CSE-706", domain:"IoT", title:"Smart IoT Crop Monitoring",
+  brief:"An IoT-based system using soil moisture, temperature, and humidity sensors to monitor farmland remotely, with automated irrigation alerts sent to a mobile-friendly dashboard.",
+  stack:"Arduino/ESP32, DHT11, Soil Moisture Sensor, MQTT, Node.js, React",
+  roles:["Sensor Circuit & Firmware","IoT Communication (MQTT/Cloud)","Backend & Alert Logic","Dashboard Frontend"],
+  months:[
+    {label:"Foundation", title:"Hardware setup & wiring",
+      steps:["Procure low-cost components: ESP32 board, DHT11 sensor, soil moisture sensor, relay module.",
+        "Study ESP32 programming basics using Arduino IDE and sensor datasheets.",
+        "Wire sensors to ESP32 and write firmware to read moisture, temperature, and humidity values.",
+        "Set up an MQTT broker (free tier of HiveMQ/Mosquitto) for sensor data transmission."]},
+    {label:"Core Build", title:"Data pipeline & automation logic",
+      steps:["Program ESP32 to publish sensor readings to MQTT topics at fixed intervals.",
+        "Build a Node.js subscriber service that stores incoming readings into a database (MongoDB/InfluxDB).",
+        "Implement threshold-based logic: trigger a relay to simulate irrigation pump when soil moisture is low.",
+        "Add SMS/email alert integration (using free APIs like Twilio trial/EmailJS) for critical thresholds."]},
+    {label:"Integration", title:"Dashboard & visualization",
+      steps:["Build a React dashboard showing live sensor readings and historical trend charts.",
+        "Add manual override toggle to switch irrigation on/off remotely from the dashboard.",
+        "Implement multi-field/multi-sensor support so the system scales to several farm zones.",
+        "Add a mobile-responsive layout for field-side viewing on phones."]},
+    {label:"Finish Line", title:"Field testing & documentation",
+      steps:["Deploy the hardware in a real or simulated small garden/farm patch for live testing.",
+        "Calibrate sensor thresholds based on actual soil and crop-type data.",
+        "Test system reliability over multiple days, including power-loss/reconnection handling.",
+        "Document hardware wiring diagrams, cost sheet, and prepare final demo."]}
+  ]
+},
+{
+  code:"CSE-707", domain:"Deep Learning", title:"Real-Time Sign Language Translator",
+  brief:"A real-time system that captures hand gestures via webcam and translates common sign language gestures into text/speech to aid communication for the hearing-impaired.",
+  stack:"Python, MediaPipe, TensorFlow/Keras, OpenCV, Streamlit",
+  roles:["Gesture Dataset Collection","Model Training (CNN/LSTM)","Real-Time Inference Pipeline","App Interface & Text-to-Speech"],
+  months:[
+    {label:"Foundation", title:"Dataset & landmark extraction",
+      steps:["Select a target gesture set (e.g. ASL/ISL alphabet plus 15-20 common words).",
+        "Use MediaPipe Hands to extract hand-landmark coordinates from webcam/video samples.",
+        "Collect and label a custom dataset (500+ samples per gesture) via a simple recording script.",
+        "Set up the ML environment: TensorFlow/Keras, OpenCV, and MediaPipe."]},
+    {label:"Core Build", title:"Model training",
+      steps:["Train a CNN/LSTM classifier on the landmark-coordinate sequences for gesture recognition.",
+        "Evaluate model accuracy on a validation split; tune hyperparameters to reduce misclassification.",
+        "Optimise the model for real-time inference speed (reduce frame lag below 200ms).",
+        "Export the trained model in TensorFlow Lite format for lightweight deployment."]},
+    {label:"Integration", title:"Real-time app & speech output",
+      steps:["Build a Streamlit/OpenCV app that captures webcam feed and overlays predicted gesture text live.",
+        "Integrate a text-to-speech engine (pyttsx3/gTTS) to vocalise recognised words.",
+        "Add a sentence-builder mode that accumulates recognised words into readable phrases.",
+        "Add a confidence threshold to reduce false positives during rapid hand movement."]},
+    {label:"Finish Line", title:"Testing & finalisation",
+      steps:["Test with multiple users of varying hand sizes and lighting conditions; log accuracy.",
+        "Refine the gesture set based on real testing feedback (remove frequently confused signs).",
+        "Package the app for easy local installation with a simple setup guide.",
+        "Prepare final report, accuracy benchmarks, and a live demonstration video."]}
+  ]
+},
+{
+  code:"CSE-708", domain:"Machine Learning", title:"ML Personal Finance Tracker",
+  brief:"A personal finance web app that auto-categorises transactions, predicts monthly spending, and gives savings recommendations using simple machine learning models.",
+  stack:"Python, pandas, scikit-learn, Django/FastAPI, React, Chart.js",
+  roles:["Transaction Categorisation Model","Spending Prediction Model","Backend & Database Design","Dashboard & Visualization Frontend"],
+  months:[
+    {label:"Foundation", title:"Data design & category model",
+      steps:["Design the transaction schema: date, amount, description, category, account.",
+        "Collect/generate a sample transaction dataset (bank statement CSV samples or synthetic data).",
+        "Study text-classification approaches for auto-categorising transactions from descriptions.",
+        "Set up backend (FastAPI/Django) and database (PostgreSQL/SQLite) skeleton."]},
+    {label:"Core Build", title:"Categorisation & prediction models",
+      steps:["Train a classifier (Naive Bayes/Random Forest) to auto-tag transactions into categories like food, rent, travel.",
+        "Build a time-series/regression model to forecast next month's spending per category.",
+        "Implement a rule-based savings recommendation engine (e.g. flag categories exceeding budget by X%).",
+        "Expose all logic via backend APIs with proper validation and error handling."]},
+    {label:"Integration", title:"CSV import & dashboard",
+      steps:["Build a CSV/manual transaction upload feature with automatic categorisation on import.",
+        "Build a React dashboard with spending breakdown pie charts and monthly trend line charts.",
+        "Add budget-setting feature per category with visual progress bars.",
+        "Add user authentication so each user's financial data stays private."]},
+    {label:"Finish Line", title:"Testing & deployment",
+      steps:["Test the app with 3-6 months of sample data across multiple mock users.",
+        "Validate prediction accuracy and refine the categorisation rules for edge-case descriptions.",
+        "Deploy on a free-tier cloud host (Render/Vercel) with environment-based configuration.",
+        "Prepare final documentation, model accuracy report, and demo walkthrough."]}
+  ]
+},
+{
+  code:"CSE-709", domain:"Cloud Computing", title:"Cloud Hospital Management System",
+  brief:"A cloud-hosted hospital management platform handling patient records, appointment scheduling, doctor availability, and billing, accessible to staff and patients alike.",
+  stack:"Node.js/Django, PostgreSQL, React, Docker, AWS Free Tier/Render",
+  roles:["Patient & Appointment Module","Doctor & Staff Module","Billing & Reports Module","Cloud Deployment & Frontend"],
+  months:[
+    {label:"Foundation", title:"Requirement analysis & schema design",
+      steps:["Interview/research typical hospital workflows: registration, OPD, appointments, billing.",
+        "Design ER diagram covering patients, doctors, appointments, prescriptions, and invoices.",
+        "Choose the stack: Django/Node backend, PostgreSQL database, React frontend.",
+        "Set up version control, project structure, and a Dockerfile for containerisation."]},
+    {label:"Core Build", title:"Core modules development",
+      steps:["Build patient registration, doctor profile, and appointment-booking APIs with slot conflict checks.",
+        "Implement role-based access control: admin, doctor, receptionist, patient logins.",
+        "Build prescription and medical-history recording tied to each patient visit.",
+        "Write automated tests for booking logic and access-control rules."]},
+    {label:"Integration", title:"Billing, notifications & frontend",
+      steps:["Build the billing module generating itemised invoices from consultations/tests/medicines.",
+        "Add email/SMS appointment reminders using a free-tier notification API.",
+        "Build the React frontend: patient portal, doctor dashboard, and admin reports view.",
+        "Add search/filter for patient records and appointment history."]},
+    {label:"Finish Line", title:"Containerised deployment & testing",
+      steps:["Containerise the application using Docker and docker-compose for backend, frontend, and DB.",
+        "Deploy on a free-tier cloud platform (Render/AWS Free Tier/Railway).",
+        "Conduct load and functional testing with simulated concurrent bookings.",
+        "Prepare deployment documentation, ER diagrams, and final demo."]}
+  ]
+},
+{
+  code:"CSE-710", domain:"Generative AI", title:"AI Powered Code Reviewer",
+  brief:"A tool that analyses submitted code (via upload or GitHub link) and returns quality feedback, bug flags, and improvement suggestions using static analysis plus an LLM.",
+  stack:"Python, LLM API (open-source/free-tier), AST parsing, FastAPI, React",
+  roles:["Static Analysis Engine","LLM Prompt & Review Logic","Backend API & GitHub Integration","Report Frontend"],
+  months:[
+    {label:"Foundation", title:"Scope & tooling setup",
+      steps:["Decide supported languages for review (start with Python and JavaScript).",
+        "Study static analysis tools (pylint, ESLint, AST module) for baseline code checks.",
+        "Choose an LLM access method (free-tier API or open-source model) for semantic review.",
+        "Design the review pipeline: parse code -> run static checks -> LLM review -> combined report."]},
+    {label:"Core Build", title:"Analysis pipeline",
+      steps:["Integrate pylint/ESLint to catch style violations, unused variables, and complexity issues.",
+        "Write AST-based checks for common anti-patterns (deep nesting, long functions, duplicate code).",
+        "Design prompts that ask the LLM to review code for logic bugs, security issues, and readability.",
+        "Merge static-analysis output and LLM feedback into one structured JSON report."]},
+    {label:"Integration", title:"GitHub integration & UI",
+      steps:["Build a feature to fetch a public GitHub repo/PR via its API for automatic review.",
+        "Build the FastAPI backend exposing review endpoints for uploaded files or repo links.",
+        "Build a React frontend showing line-by-line comments, severity tags, and summary score.",
+        "Add a downloadable PDF/markdown report generation feature."]},
+    {label:"Finish Line", title:"Accuracy testing & polish",
+      steps:["Test on 15-20 real open-source code samples with known issues to check detection accuracy.",
+        "Tune prompts and static-analysis rules to reduce false positives.",
+        "Deploy backend and frontend on free hosting; add basic rate-limiting for API usage.",
+        "Prepare final report comparing manual vs tool-assisted review findings, and demo."]}
+  ]
+},
+{
+  code:"CSE-711", domain:"Smart Systems", title:"Smart Parking Slot Finder",
+  brief:"An IoT and app-based system that detects free/occupied parking slots using ultrasonic sensors and guides drivers to the nearest available slot via a mobile-friendly app.",
+  stack:"Arduino/ESP32, Ultrasonic Sensors, Node.js, MQTT, React Native/React",
+  roles:["Sensor Hardware & Firmware","Slot-Status Communication Layer","Backend & Slot Allocation Logic","User App/Web Interface"],
+  months:[
+    {label:"Foundation", title:"Hardware planning & prototype layout",
+      steps:["Design a small-scale parking lot prototype (8-12 slots) using cardboard/acrylic model.",
+        "Procure ultrasonic sensors (HC-SR04), ESP32 boards, and LEDs for slot indicators.",
+        "Wire each slot's sensor to detect vehicle presence and test basic distance readings.",
+        "Set up an MQTT broker for transmitting slot-status updates."]},
+    {label:"Core Build", title:"Status pipeline & allocation logic",
+      steps:["Program ESP32 to publish occupied/free status per slot to MQTT topics in real time.",
+        "Build a Node.js service subscribing to MQTT and maintaining live slot-status in a database.",
+        "Implement a slot-recommendation algorithm suggesting the nearest free slot to the entrance.",
+        "Add entry/exit gate simulation logic using additional sensors or manual triggers."]},
+    {label:"Integration", title:"User app & admin view",
+      steps:["Build a mobile-friendly React/React Native app showing a live slot map with colour-coded status.",
+        "Add slot reservation feature so a user can lock a slot for a short time before arrival.",
+        "Build an admin view for lot managers to see occupancy trends and peak hours.",
+        "Add push/browser notifications when a reserved slot is about to expire."]},
+    {label:"Finish Line", title:"Testing & demonstration",
+      steps:["Test the physical prototype with simulated vehicles (toy cars/objects) across all slots.",
+        "Measure sensor reliability and fix false readings from ambient interference.",
+        "Prepare a short demo video showing the full flow: sensor detection to app booking.",
+        "Document hardware schematics, cost breakdown, and final project report."]}
+  ]
+},
+{
+  code:"CSE-712", domain:"Cybersecurity", title:"Phishing URL Detection Tool",
+  brief:"A browser extension and web tool that analyses URLs in real time and flags likely phishing sites using a trained ML classifier on URL and page features.",
+  stack:"Python, scikit-learn, Flask, Chrome Extension APIs, JavaScript",
+  roles:["Feature Engineering & Dataset","ML Model Training","Backend Detection API","Browser Extension Development"],
+  months:[
+    {label:"Foundation", title:"Dataset & feature design",
+      steps:["Collect labelled phishing and legitimate URL datasets (e.g. PhishTank, UCI phishing dataset).",
+        "Study URL-based features: length, use of IP address, HTTPS presence, special characters, domain age.",
+        "Extract these features programmatically for each URL in the dataset using Python.",
+        "Set up the ML environment and perform exploratory data analysis on feature distributions."]},
+    {label:"Core Build", title:"Model training & API",
+      steps:["Train and compare classifiers (Random Forest, XGBoost, Logistic Regression) on the extracted features.",
+        "Evaluate using precision/recall, prioritising low false-negative rate (missed phishing sites).",
+        "Wrap the trained model in a Flask API endpoint accepting a URL and returning risk score.",
+        "Add domain-reputation lookups (WHOIS/free threat-intel API) as a supplementary signal."]},
+    {label:"Integration", title:"Browser extension & alerts",
+      steps:["Build a Chrome extension that intercepts navigation and calls the detection API in the background.",
+        "Display a clear warning banner/popup for pages flagged as high-risk before the user proceeds.",
+        "Build a simple web dashboard for manually checking any URL outside the browser.",
+        "Add a whitelist/report-false-positive feature for user feedback."]},
+    {label:"Finish Line", title:"Validation & packaging",
+      steps:["Test against a fresh set of recently reported phishing URLs and known-safe sites.",
+        "Tune the model threshold to balance usability against false alarms.",
+        "Package the extension for local installation and deploy the API on a free-tier host.",
+        "Prepare the final report with model metrics and a live demonstration."]}
+  ]
+},
+{
+  code:"CSE-713", domain:"Augmented Reality", title:"AR Interior Design Visualizer",
+  brief:"A mobile AR application letting users place virtual furniture models inside their real room via camera view to preview interior design choices before purchase.",
+  stack:"Unity, AR Foundation/ARCore, C#, Blender (for 3D assets)",
+  roles:["3D Asset Preparation","AR Scene & Placement Logic","UI/UX for Furniture Catalogue","Testing & Device Optimisation"],
+  months:[
+    {label:"Foundation", title:"Tooling setup & asset sourcing",
+      steps:["Install Unity with AR Foundation and set up an ARCore-compatible test device.",
+        "Source or model 10-15 low-poly furniture assets (chair, sofa, table, lamp) using Blender or free asset packs.",
+        "Study AR plane detection, anchor points, and light estimation concepts.",
+        "Design the app flow: scan room -> browse catalogue -> place/rotate/scale furniture."]},
+    {label:"Core Build", title:"AR placement engine",
+      steps:["Implement plane detection to identify floor/wall surfaces in the camera feed.",
+        "Build tap-to-place logic that anchors a selected 3D furniture model onto detected surfaces.",
+        "Add gesture controls for rotating, resizing, and repositioning placed objects.",
+        "Implement basic occlusion/shadow rendering so objects look grounded in the real scene."]},
+    {label:"Integration", title:"Catalogue UI & save feature",
+      steps:["Build a scrollable furniture catalogue UI with category filters (living room, bedroom, etc).",
+        "Add a 'save layout' feature that stores object positions for revisiting a design later.",
+        "Add screenshot/share functionality so users can export their AR room preview.",
+        "Optimise 3D asset polygon counts and textures for smooth mobile performance."]},
+    {label:"Finish Line", title:"Device testing & finalisation",
+      steps:["Test the app across multiple room types and lighting conditions on real Android devices.",
+        "Fix tracking drift and performance issues (frame drops, asset loading delays).",
+        "Prepare a build (APK) for demonstration and a walkthrough video of the placement flow.",
+        "Document the asset pipeline, AR logic, and final project report."]}
+  ]
+},
+{
+  code:"CSE-714", domain:"Accessibility Tech", title:"Voice Assistant for Blind",
+  brief:"A voice-controlled assistant that reads out surroundings, documents, and navigation cues, helping visually impaired users interact with a smartphone hands-free.",
+  stack:"Python/Android (Kotlin), Speech-to-Text, TTS, Object Detection (YOLO-tiny)",
+  roles:["Speech Recognition & Command Parsing","Object/Scene Description Module","Text-to-Speech & Navigation Feedback","App Integration & Accessibility Testing"],
+  months:[
+    {label:"Foundation", title:"Requirement study & platform choice",
+      steps:["Research accessibility guidelines and common pain points for visually impaired smartphone users.",
+        "Choose platform: Android app (Kotlin) using on-device speech APIs, or Python prototype for desktop demo.",
+        "Set up speech-to-text (Android SpeechRecognizer/Vosk) and text-to-speech (Android TTS/pyttsx3) pipelines.",
+        "Define supported voice commands: read message, describe surroundings, read document, set reminder."]},
+    {label:"Core Build", title:"Core voice & vision pipeline",
+      steps:["Implement command parsing to map recognised speech to specific app actions.",
+        "Integrate a lightweight object-detection model (YOLO-tiny/MobileNet) to describe camera surroundings.",
+        "Build a document-reading feature using OCR (Tesseract) plus TTS for scanned text/images.",
+        "Add continuous 'wake-word' style listening for hands-free activation."]},
+    {label:"Integration", title:"Navigation aid & app polish",
+      steps:["Add a basic obstacle-alert feature using object-detection distance estimates.",
+        "Build simple, high-contrast/voice-guided menus for users who may have partial vision.",
+        "Add reminders and contact-calling by voice command using device APIs.",
+        "Ensure all responses are read back audibly with minimal latency."]},
+    {label:"Finish Line", title:"Real-user testing & refinement",
+      steps:["Test with volunteers (blindfolded testing sessions) to evaluate command accuracy and usability.",
+        "Refine command vocabulary and TTS phrasing based on real feedback.",
+        "Package as an installable APK/desktop app with a simple setup guide.",
+        "Prepare the final report highlighting accessibility impact and demo video."]}
+  ]
+},
+{
+  code:"CSE-715", domain:"Industrial ML", title:"Predictive Equipment Maintenance",
+  brief:"A machine learning system that predicts equipment failure using sensor telemetry (vibration, temperature) to schedule maintenance before breakdowns occur.",
+  stack:"Python, pandas, scikit-learn/XGBoost, Flask, React, Simulated IoT data",
+  roles:["Sensor Data Simulation & Collection","Failure-Prediction Model","Backend Alerting Service","Maintenance Dashboard"],
+  months:[
+    {label:"Foundation", title:"Dataset & problem setup",
+      steps:["Use an open predictive-maintenance dataset (e.g. NASA Turbofan/AI4I 2020) or simulate sensor data.",
+        "Study time-series feature engineering: rolling averages, trend slopes, anomaly windows.",
+        "Set up the ML environment and perform exploratory analysis of failure patterns.",
+        "Design the system architecture: data ingestion -> feature pipeline -> model -> alert service."]},
+    {label:"Core Build", title:"Model development",
+      steps:["Engineer features capturing degradation trends from raw sensor readings.",
+        "Train classification/regression models (XGBoost, Random Forest) to predict remaining useful life or failure probability.",
+        "Evaluate using appropriate metrics (RMSE for RUL, F1 for failure classification).",
+        "Save the trained model and build a Flask API for real-time scoring of new readings."]},
+    {label:"Integration", title:"Alerting & dashboard",
+      steps:["Build a simulated real-time data stream feeding the model at fixed intervals.",
+        "Implement threshold-based alerts (email/dashboard banner) when failure risk crosses a limit.",
+        "Build a React dashboard showing live machine health scores and historical trend graphs.",
+        "Add a maintenance-log feature so technicians can record actions taken per alert."]},
+    {label:"Finish Line", title:"Validation & documentation",
+      steps:["Backtest the model against historical failure events to measure early-warning lead time.",
+        "Tune alert thresholds to balance false alarms against missed failures.",
+        "Deploy the dashboard and API on a free-tier host for demonstration.",
+        "Prepare the final report with model performance metrics and business-impact summary."]}
+  ]
+},
+{
+  code:"CSE-716", domain:"Distributed Systems", title:"Decentralized Cloud File Storage",
+  brief:"A peer-to-peer style file storage system that splits, encrypts, and distributes files across multiple nodes, rebuilding them securely on retrieval, inspired by IPFS concepts.",
+  stack:"Python/Node.js, IPFS, AES Encryption, React",
+  roles:["File Chunking & Encryption Module","IPFS/Node Network Integration","Retrieval & Reconstruction Logic","Web Client Interface"],
+  months:[
+    {label:"Foundation", title:"Concepts & environment setup",
+      steps:["Study distributed hash tables, content-addressing, and how IPFS stores/retrieves data.",
+        "Install and run a local IPFS node; experiment with adding/retrieving files via CLI.",
+        "Design the system: client encrypts file -> splits into chunks -> uploads to IPFS -> stores manifest.",
+        "Set up the backend project structure (Node.js/Python) and React client skeleton."]},
+    {label:"Core Build", title:"Chunking, encryption & storage",
+      steps:["Implement file-chunking logic splitting uploads into fixed-size blocks.",
+        "Encrypt each chunk with AES using a user-derived key before upload.",
+        "Upload chunks to the local/public IPFS network and store their content hashes in a manifest file.",
+        "Store manifests (chunk hash lists) in a lightweight database linked to user accounts."]},
+    {label:"Integration", title:"Retrieval & client app",
+      steps:["Implement retrieval logic: fetch chunks by hash, decrypt, and reassemble the original file.",
+        "Build a React web client for drag-and-drop upload and one-click download.",
+        "Add file-sharing via a secure link containing an encrypted access token.",
+        "Add basic user authentication so manifests are private per user."]},
+    {label:"Finish Line", title:"Testing & resilience checks",
+      steps:["Test uploads/downloads across various file types and sizes, verifying integrity via checksums.",
+        "Simulate a node going offline and confirm files remain retrievable from IPFS's distributed network.",
+        "Benchmark upload/download speed versus a traditional cloud storage baseline.",
+        "Document the encryption scheme, architecture diagram, and prepare the final demo."]}
+  ]
+},
+{
+  code:"CSE-717", domain:"Health Informatics", title:"Student Mental Wellness Tracker",
+  brief:"A confidential web/mobile app where students log mood and stress levels daily, receiving trend insights and gentle self-care suggestions, with anonymised alerts to counsellors for concerning patterns.",
+  stack:"React Native/React, Node.js, MongoDB, Chart.js, basic sentiment analysis",
+  roles:["Mood Logging & Data Model","Trend Analysis & Insight Engine","Counsellor Alert Module","App Frontend & UX"],
+  months:[
+    {label:"Foundation", title:"Requirement study & ethical design",
+      steps:["Research existing mental-wellness tracking apps and simple validated mood-scale questionnaires (e.g. PHQ-style check-ins, used only as inspiration, not clinical diagnosis).",
+        "Design the data model: daily mood score, stress level, optional journal note, timestamp, anonymised user ID.",
+        "Plan privacy safeguards: local encryption, anonymised aggregate reporting, no public data exposure.",
+        "Set up the backend (Node.js/MongoDB) and app frontend skeleton."]},
+    {label:"Core Build", title:"Logging & analysis engine",
+      steps:["Build the daily check-in UI: mood slider, stress rating, and optional short journal entry.",
+        "Implement a simple sentiment-analysis pass on journal text to flag strongly negative entries.",
+        "Build trend-analysis logic generating weekly/monthly mood pattern summaries per user.",
+        "Implement a rule-based suggestion engine (breathing exercise, break reminder, talk-to-someone prompt) based on trend severity."]},
+    {label:"Integration", title:"Counsellor view & notifications",
+      steps:["Build an anonymised aggregate dashboard for counsellors showing overall trend alerts, not individual identities, unless a student opts in to share.",
+        "Add an opt-in feature letting a student directly flag themselves for counsellor contact.",
+        "Add gentle reminder notifications encouraging consistent daily check-ins.",
+        "Add a simple resource page with self-care tips and helpline information."]},
+    {label:"Finish Line", title:"Usability testing & documentation",
+      steps:["Run a two-week pilot with volunteer students to test daily usability and clarity of insights.",
+        "Refine UI based on feedback; ensure the tone stays supportive and non-judgemental throughout.",
+        "Deploy the app on a free-tier host and prepare clear privacy documentation.",
+        "Prepare the final report emphasising ethical handling of sensitive data and demo walkthrough."]}
+  ]
+},
+{
+  code:"CSE-718", domain:"EdTech", title:"AI Exam Proctoring System",
+  brief:"An online exam monitoring tool that uses webcam-based face and gaze tracking to flag suspicious activity during remote tests, generating a review report for instructors.",
+  stack:"Python, OpenCV, MediaPipe, Flask, React, WebRTC",
+  roles:["Face & Gaze Tracking Module","Suspicious-Activity Detection Logic","Exam Session Backend","Instructor Review Dashboard"],
+  months:[
+    {label:"Foundation", title:"Scope definition & setup",
+      steps:["Define the set of monitored behaviours: face not visible, multiple faces, looking away frequently, tab switching.",
+        "Set up Python environment with OpenCV and MediaPipe for face-mesh and gaze estimation.",
+        "Design the exam-session architecture: webcam capture -> local flagging -> event log -> report.",
+        "Sketch the instructor review dashboard layout and flag-severity scoring approach."]},
+    {label:"Core Build", title:"Detection pipeline",
+      steps:["Implement face-presence and multiple-face detection on the live webcam feed.",
+        "Implement gaze-direction estimation using MediaPipe face landmarks to flag prolonged look-aways.",
+        "Add browser-tab-switch and window-blur detection via JavaScript events during the exam.",
+        "Timestamp and log all flagged events locally during the session for later review."]},
+    {label:"Integration", title:"Exam backend & dashboard",
+      steps:["Build the exam-session backend handling start/stop, question delivery, and event-log storage.",
+        "Build the React instructor dashboard listing students with flagged-event counts and timestamps.",
+        "Add short video/screenshot snippets attached to each flagged event for manual review.",
+        "Add an overall integrity score per student combining all flagged signals."]},
+    {label:"Finish Line", title:"Pilot testing & refinement",
+      steps:["Run a mock exam with 15-20 student volunteers to test detection accuracy and false-positive rate.",
+        "Tune thresholds to avoid over-flagging normal behaviour (e.g. brief natural glances away).",
+        "Deploy the system on a free-tier host for a live demonstration exam.",
+        "Prepare documentation covering detection logic, limitations, and ethical-use notes."]}
+  ]
+},
+{
+  code:"CSE-719", domain:"Smart City", title:"Smart Waste Collection System",
+  brief:"An IoT-based waste management solution using ultrasonic fill-level sensors on bins, optimising collection routes for garbage trucks via a live monitoring dashboard.",
+  stack:"Arduino/ESP32, Ultrasonic Sensors, MQTT, Node.js, Google Maps API (free tier), React",
+  roles:["Bin Sensor Hardware & Firmware","Fill-Level Data Pipeline","Route Optimisation Backend","Monitoring Dashboard Frontend"],
+  months:[
+    {label:"Foundation", title:"Prototype hardware & data flow design",
+      steps:["Build a small prototype: 4-6 mock bins fitted with ultrasonic sensors measuring fill level.",
+        "Program ESP32 boards to read fill-level distance and publish readings via MQTT.",
+        "Set up an MQTT broker and a Node.js subscriber storing readings with bin ID and location.",
+        "Design the database schema for bins, fill-history, and truck routes."]},
+    {label:"Core Build", title:"Threshold logic & basic optimisation",
+      steps:["Implement fill-level percentage calculation and a threshold to mark a bin as 'needs collection'.",
+        "Build a simple nearest-neighbour/greedy route-optimisation algorithm ordering bins that need collection.",
+        "Integrate a free-tier maps API to visualise bin locations and suggested collection route.",
+        "Add historical fill-rate tracking to predict which bins will need collection soon."]},
+    {label:"Integration", title:"Dashboard & alerts",
+      steps:["Build a React dashboard showing a live map of bin locations colour-coded by fill level.",
+        "Add automatic alerts (dashboard/email) when a bin crosses the critical fill threshold.",
+        "Add a route-view page showing the optimised collection path for the day's full bins.",
+        "Add a simple driver-facing mobile view listing today's stops in order."]},
+    {label:"Finish Line", title:"Testing & documentation",
+      steps:["Test the physical prototype by simulating bins filling up and verifying correct alerting.",
+        "Validate route optimisation against a manually planned route for time/distance savings.",
+        "Document hardware wiring, algorithm logic, and cost estimates for scaling to a real locality.",
+        "Prepare the final report and a live demo of sensor-to-dashboard-to-route flow."]}
+  ]
+},
+{
+  code:"CSE-720", domain:"Reinforcement Learning", title:"AI Traffic Signal Optimizer",
+  brief:"A simulation-based system where traffic signal timings are optimised in real time using reinforcement learning to reduce average vehicle wait time at intersections.",
+  stack:"Python, SUMO (traffic simulator), TensorFlow/PyTorch, Flask, React",
+  roles:["Traffic Simulation Environment Setup","RL Agent Design & Training","Backend Simulation Control API","Visualization Dashboard"],
+  months:[
+    {label:"Foundation", title:"Simulator setup & baseline",
+      steps:["Install SUMO (Simulation of Urban Mobility), a free open-source traffic simulator.",
+        "Model a sample 4-way intersection with configurable traffic flow in SUMO.",
+        "Implement a fixed-timer baseline signal controller and measure average wait time as a benchmark.",
+        "Study reinforcement learning basics (Q-learning/DQN) and how SUMO's TraCI API allows Python control."]},
+    {label:"Core Build", title:"RL agent development",
+      steps:["Define the RL state (queue lengths, waiting times per lane), actions (signal phase choices), and reward (negative total wait time).",
+        "Implement a DQN agent using TensorFlow/PyTorch that interacts with SUMO via the TraCI interface.",
+        "Train the agent across many simulated traffic episodes, logging reward improvement over time.",
+        "Evaluate the trained agent against the fixed-timer baseline on unseen traffic patterns."]},
+    {label:"Integration", title:"Control API & visualization",
+      steps:["Build a Flask backend that runs simulation episodes and streams live intersection state.",
+        "Build a React dashboard visualising the intersection, current signal phase, and live queue lengths.",
+        "Add a comparison view showing RL-agent performance versus baseline in real time, side by side.",
+        "Add configurable traffic-density scenarios (light, moderate, peak-hour) selectable from the UI."]},
+    {label:"Finish Line", title:"Evaluation & reporting",
+      steps:["Run extensive test scenarios (varying traffic density, multi-intersection setup if time allows) to validate robustness.",
+        "Collect quantitative results: percentage reduction in average wait time versus baseline.",
+        "Package the demo so evaluators can watch the simulation live with both controllers running.",
+        "Prepare the final report with training curves, benchmark charts, and conclusions."]}
+  ]
+}
+];
+
+const tabList = document.getElementById('tabList');
+const content = document.getElementById('content');
+
+function renderTabs(activeIndex){
+  tabList.innerHTML = PROJECTS.map((p,i)=>`
+    <li>
+      <button class="tab-item ${i===activeIndex?'active':''}" data-i="${i}">
+        <span class="num">${String(i+1).padStart(2,'0')}</span>
+        <span class="tname">${p.title}<span class="tdomain">${p.domain}</span></span>
+      </button>
+    </li>
+  `).join('');
+  tabList.querySelectorAll('.tab-item').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = parseInt(btn.dataset.i,10);
+      renderTabs(i);
+      renderContent(i);
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+}
+
+function renderContent(i){
+  const p = PROJECTS[i];
+  content.innerHTML = `
+    <div class="charter">
+      <div class="charter-left">
+        <span class="code">${p.code} &nbsp;/&nbsp; ${p.domain}</span>
+        <h2>${p.title}</h2>
+        <p class="brief">${p.brief}</p>
+      </div>
+      <div class="stamp">
+        <div class="stxt">Build Span<span class="sdur">4 MO</span>Team of 4</div>
+      </div>
+    </div>
+
+    <div class="meta-row">
+      <span class="meta-chip"><b>Stack:</b> ${p.stack}</span>
+      <span class="meta-chip"><b>Team size:</b> 4 students</span>
+      <span class="meta-chip"><b>Duration:</b> 4 months</span>
+    </div>
+
+    <div class="section-label">Suggested Team Roles</div>
+    <div class="roles">
+      ${p.roles.map((r,idx)=>`
+        <div class="role-card">
+          <div class="rn">Member ${idx+1}</div>
+          <div class="rt">${r}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="section-label">Month-by-Month Execution Plan</div>
+    <div class="timeline">
+      ${p.months.map((m,idx)=>`
+        <div class="month-block">
+          <div class="month-marker">
+            <div class="mno">M<span>${idx+1}</span></div>
+            <span class="mlabel">${m.label}</span>
+          </div>
+          <div class="month-content">
+            <h4>${m.title}</h4>
+            <ul class="steps">
+              ${m.steps.map(s=>`<li>${s}</li>`).join('')}
+            </ul>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <div class="deliverable-note">
+      <span class="dl-label">Final Deliverables</span>
+      <p>Working prototype/deployment, source code repository, month-wise progress log, final project report with architecture diagrams, and a live demonstration to the evaluation panel.</p>
+    </div>
+  `;
+}
+
+renderTabs(0);
+renderContent(0);
+</script>
+</body>
+</html>
