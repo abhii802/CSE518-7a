@@ -8,11 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#0B1220;
-    --navy-2:#101B2D;
-    --grid-line:rgba(90,150,190,0.16);
-    --paper:#ECEEE7;
-    --paper-2:#E2E5DC;
+    --navy:#FFFFFF;
+    --navy-2:#F5F5F5;
+    --grid-line:rgba(18,22,31,0.08);
+    --paper:#FFFFFF;
+    --paper-2:#F5F5F5;
     --ink:#12161F;
     --ink-soft:#4A5261;
     --teal:#2AC3B0;
@@ -23,7 +23,7 @@
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--navy);
+    background:#FFFFFF;
     font-family:'Source Serif 4', serif;
     color:var(--ink);
     -webkit-font-smoothing:antialiased;
@@ -47,11 +47,11 @@
     top:0;
     height:100vh;
     overflow-y:auto;
-    border-right:1px solid rgba(255,255,255,0.06);
+    border-right:1px solid rgba(18,22,31,0.1);
   }
   .brand{
     padding:0 24px 20px;
-    border-bottom:1px solid rgba(255,255,255,0.08);
+    border-bottom:1px solid rgba(18,22,31,0.12);
     margin-bottom:10px;
   }
   .brand .eyebrow{
@@ -63,7 +63,7 @@
   }
   .brand h1{
     font-family:'Space Grotesk', sans-serif;
-    color:#F4F6F2;
+    color:var(--ink);
     font-size:22px;
     line-height:1.25;
     margin:8px 0 6px;
@@ -72,7 +72,7 @@
   .brand p{
     font-family:'IBM Plex Mono', monospace;
     font-size:11.5px;
-    color:#8B97A8;
+    color:var(--ink-soft);
     margin:0;
     line-height:1.6;
   }
@@ -92,17 +92,17 @@
     cursor:pointer;
     padding:10px 12px;
     border-radius:4px;
-    color:#C4CCD8;
+    color:var(--ink-soft);
     font-family:'Space Grotesk', sans-serif;
     font-size:13.5px;
     line-height:1.35;
     margin-bottom:2px;
     transition:background .15s ease, color .15s ease;
   }
-  .tab-item:hover{ background:rgba(42,195,176,0.08); color:#fff; }
+  .tab-item:hover{ background:rgba(42,195,176,0.08); color:var(--ink); }
   .tab-item.active{
     background:rgba(42,195,176,0.14);
-    color:#fff;
+    color:var(--ink);
     box-shadow:inset 3px 0 0 var(--teal);
   }
   .tab-item .num{
@@ -342,8 +342,9 @@
     margin-top:44px;
     padding:18px 22px;
     background:var(--navy-2);
+    border:1px solid var(--rule);
     border-radius:6px;
-    color:#DCE3EC;
+    color:var(--ink);
   }
   .deliverable-note .dl-label{
     font-family:'IBM Plex Mono', monospace;
@@ -530,31 +531,31 @@ const PROJECTS = [
   ]
 },
 {
-  code:"CSE-706", domain:"IoT", title:"Smart IoT Crop Monitoring",
-  brief:"An IoT-based system using soil moisture, temperature, and humidity sensors to monitor farmland remotely, with automated irrigation alerts sent to a mobile-friendly dashboard.",
-  stack:"Arduino/ESP32, DHT11, Soil Moisture Sensor, MQTT, Node.js, React",
-  roles:["Sensor Circuit & Firmware","IoT Communication (MQTT/Cloud)","Backend & Alert Logic","Dashboard Frontend"],
+  code:"CSE-706", domain:"AgriTech / AI", title:"AI Crop Advisory & Yield Prediction Platform",
+  brief:"A web platform that uses public weather, soil, and satellite data APIs together with machine learning to give farmers real-time crop-health insights, irrigation advice, and yield predictions — entirely software-based, with no custom hardware to build or maintain.",
+  stack:"Python, scikit-learn/TensorFlow, Flask, OpenWeatherMap API, Sentinel Hub/NASA POWER API, React",
+  roles:["ML Model Design (Yield Prediction)","Weather & Satellite Data Pipeline","Backend & Advisory Logic","Farmer-Facing Dashboard Frontend"],
   months:[
-    {label:"Foundation", title:"Hardware setup & wiring",
-      steps:["Procure low-cost components: ESP32 board, DHT11 sensor, soil moisture sensor, relay module.",
-        "Study ESP32 programming basics using Arduino IDE and sensor datasheets.",
-        "Wire sensors to ESP32 and write firmware to read moisture, temperature, and humidity values.",
-        "Set up an MQTT broker (free tier of HiveMQ/Mosquitto) for sensor data transmission."]},
-    {label:"Core Build", title:"Data pipeline & automation logic",
-      steps:["Program ESP32 to publish sensor readings to MQTT topics at fixed intervals.",
-        "Build a Node.js subscriber service that stores incoming readings into a database (MongoDB/InfluxDB).",
-        "Implement threshold-based logic: trigger a relay to simulate irrigation pump when soil moisture is low.",
-        "Add SMS/email alert integration (using free APIs like Twilio trial/EmailJS) for critical thresholds."]},
-    {label:"Integration", title:"Dashboard & visualization",
-      steps:["Build a React dashboard showing live sensor readings and historical trend charts.",
-        "Add manual override toggle to switch irrigation on/off remotely from the dashboard.",
-        "Implement multi-field/multi-sensor support so the system scales to several farm zones.",
-        "Add a mobile-responsive layout for field-side viewing on phones."]},
-    {label:"Finish Line", title:"Field testing & documentation",
-      steps:["Deploy the hardware in a real or simulated small garden/farm patch for live testing.",
-        "Calibrate sensor thresholds based on actual soil and crop-type data.",
-        "Test system reliability over multiple days, including power-loss/reconnection handling.",
-        "Document hardware wiring diagrams, cost sheet, and prepare final demo."]}
+    {label:"Foundation", title:"Data sourcing & problem framing",
+      steps:["Study publicly available agricultural datasets (Kaggle crop-yield datasets, data.gov.in) and identify usable weather/soil parameters.",
+        "Set up free-tier API access for weather forecasts (OpenWeatherMap) and satellite vegetation indices (Sentinel Hub/NASA POWER).",
+        "Design the system architecture: data ingestion -> preprocessing -> ML prediction -> advisory rules -> dashboard.",
+        "Sketch the farmer-facing dashboard covering crop selection, region input, and advisory output."]},
+    {label:"Core Build", title:"Prediction models & advisory logic",
+      steps:["Train a regression model (Random Forest/XGBoost) on historical yield data using rainfall, temperature, and soil parameters as features.",
+        "Build a rule-based irrigation advisory engine combining live weather forecast with crop-specific water-requirement tables.",
+        "Integrate satellite-derived vegetation index (NDVI) data to flag crop-health anomalies for a selected farm region.",
+        "Implement a pest/disease risk-scoring module based on temperature-humidity combinations known to favour common pests."]},
+    {label:"Integration", title:"Backend API & dashboard",
+      steps:["Build a Flask REST API exposing yield-prediction, irrigation-advice, and health-risk endpoints.",
+        "Build a React dashboard where a farmer selects crop type and region to view predictions, alerts, and advisory in plain language.",
+        "Add a historical trend view comparing predicted vs. actual yield across past seasons for validation.",
+        "Add multilingual support (English/Hindi) for advisory text to widen accessibility."]},
+    {label:"Finish Line", title:"Validation & documentation",
+      steps:["Validate yield-prediction accuracy against held-out historical data and report error metrics (RMSE/MAE).",
+        "Run a feedback session with agriculture-focused faculty or extension contacts to sanity-check advisory outputs.",
+        "Deploy the platform on a free-tier host (Render/Vercel) for live demonstration.",
+        "Prepare the final report with model evaluation, data-source documentation, and demo walkthrough."]}
   ]
 },
 {
@@ -670,31 +671,31 @@ const PROJECTS = [
   ]
 },
 {
-  code:"CSE-711", domain:"Smart Systems", title:"Smart Parking Slot Finder",
-  brief:"An IoT and app-based system that detects free/occupied parking slots using ultrasonic sensors and guides drivers to the nearest available slot via a mobile-friendly app.",
-  stack:"Arduino/ESP32, Ultrasonic Sensors, Node.js, MQTT, React Native/React",
-  roles:["Sensor Hardware & Firmware","Slot-Status Communication Layer","Backend & Slot Allocation Logic","User App/Web Interface"],
+  code:"CSE-711", domain:"Computer Vision", title:"AI Parking Occupancy Detection via Video Analytics",
+  brief:"A software-only system that analyses live or recorded parking-lot camera footage using computer vision to detect free/occupied slots in real time and guide drivers via a web app — no custom sensor hardware to build.",
+  stack:"Python, OpenCV, YOLOv8, Flask, React",
+  roles:["Video Processing & Object Detection","Slot-Mapping & Occupancy Logic","Backend API & Real-Time Updates","Driver-Facing Web App"],
   months:[
-    {label:"Foundation", title:"Hardware planning & prototype layout",
-      steps:["Design a small-scale parking lot prototype (8-12 slots) using cardboard/acrylic model.",
-        "Procure ultrasonic sensors (HC-SR04), ESP32 boards, and LEDs for slot indicators.",
-        "Wire each slot's sensor to detect vehicle presence and test basic distance readings.",
-        "Set up an MQTT broker for transmitting slot-status updates."]},
-    {label:"Core Build", title:"Status pipeline & allocation logic",
-      steps:["Program ESP32 to publish occupied/free status per slot to MQTT topics in real time.",
-        "Build a Node.js service subscribing to MQTT and maintaining live slot-status in a database.",
-        "Implement a slot-recommendation algorithm suggesting the nearest free slot to the entrance.",
-        "Add entry/exit gate simulation logic using additional sensors or manual triggers."]},
-    {label:"Integration", title:"User app & admin view",
-      steps:["Build a mobile-friendly React/React Native app showing a live slot map with colour-coded status.",
-        "Add slot reservation feature so a user can lock a slot for a short time before arrival.",
-        "Build an admin view for lot managers to see occupancy trends and peak hours.",
-        "Add push/browser notifications when a reserved slot is about to expire."]},
+    {label:"Foundation", title:"Setup & slot mapping",
+      steps:["Source public parking-lot video datasets (PKLot, CNRPark) or use a webcam feed of a mock layout for testing.",
+        "Set up a Python environment with OpenCV and a pretrained YOLOv8 model for vehicle detection.",
+        "Manually annotate parking-slot boundaries on sample video frames to define a slot-coordinate map.",
+        "Design the system architecture: video frame -> vehicle detection -> slot-overlap check -> status update -> app."]},
+    {label:"Core Build", title:"Detection & occupancy logic",
+      steps:["Run YOLOv8 inference on video frames to detect vehicles and their bounding boxes.",
+        "Implement slot-occupancy logic comparing detected vehicle boxes against the annotated slot map.",
+        "Add temporal smoothing (majority vote over recent frames) to reduce flicker in occupancy status.",
+        "Log per-slot occupancy history with timestamps for analytics."]},
+    {label:"Integration", title:"Backend & driver app",
+      steps:["Build a Flask backend that processes video streams and exposes live slot-status via a WebSocket/REST API.",
+        "Build a React web app showing a live colour-coded slot map and directing drivers to the nearest free slot.",
+        "Add a slot-reservation feature letting a user temporarily hold a slot before arrival.",
+        "Add an admin analytics view showing occupancy trends and peak hours."]},
     {label:"Finish Line", title:"Testing & demonstration",
-      steps:["Test the physical prototype with simulated vehicles (toy cars/objects) across all slots.",
-        "Measure sensor reliability and fix false readings from ambient interference.",
-        "Prepare a short demo video showing the full flow: sensor detection to app booking.",
-        "Document hardware schematics, cost breakdown, and final project report."]}
+      steps:["Test detection accuracy across different lighting/weather conditions in the dataset and measure precision/recall.",
+        "Tune detection thresholds and slot-overlap rules to reduce false positives/negatives.",
+        "Deploy the system on a free-tier host and prepare a recorded demo processed live.",
+        "Document the detection pipeline, dataset sources, and evaluation metrics in the final report."]}
   ]
 },
 {
@@ -894,31 +895,31 @@ const PROJECTS = [
   ]
 },
 {
-  code:"CSE-719", domain:"Smart City", title:"Smart Waste Collection System",
-  brief:"An IoT-based waste management solution using ultrasonic fill-level sensors on bins, optimising collection routes for garbage trucks via a live monitoring dashboard.",
-  stack:"Arduino/ESP32, Ultrasonic Sensors, MQTT, Node.js, Google Maps API (free tier), React",
-  roles:["Bin Sensor Hardware & Firmware","Fill-Level Data Pipeline","Route Optimisation Backend","Monitoring Dashboard Frontend"],
+  code:"CSE-719", domain:"Computer Vision / Sustainability", title:"AI Waste Sorting & Smart Collection Route Planner",
+  brief:"A software platform combining an image-classification app that tells users how to sort waste (recyclable/organic/hazardous) with a route-optimisation dashboard that plans efficient collection routes from crowdsourced bin-status reports — no custom hardware required.",
+  stack:"Python, TensorFlow/Keras, Flask, Google Maps API (free tier), React",
+  roles:["Waste Image Classification Model","Crowdsourced Bin-Status Backend","Route Optimisation Logic","Mobile-Friendly Web App"],
   months:[
-    {label:"Foundation", title:"Prototype hardware & data flow design",
-      steps:["Build a small prototype: 4-6 mock bins fitted with ultrasonic sensors measuring fill level.",
-        "Program ESP32 boards to read fill-level distance and publish readings via MQTT.",
-        "Set up an MQTT broker and a Node.js subscriber storing readings with bin ID and location.",
-        "Design the database schema for bins, fill-history, and truck routes."]},
-    {label:"Core Build", title:"Threshold logic & basic optimisation",
-      steps:["Implement fill-level percentage calculation and a threshold to mark a bin as 'needs collection'.",
-        "Build a simple nearest-neighbour/greedy route-optimisation algorithm ordering bins that need collection.",
-        "Integrate a free-tier maps API to visualise bin locations and suggested collection route.",
-        "Add historical fill-rate tracking to predict which bins will need collection soon."]},
-    {label:"Integration", title:"Dashboard & alerts",
-      steps:["Build a React dashboard showing a live map of bin locations colour-coded by fill level.",
-        "Add automatic alerts (dashboard/email) when a bin crosses the critical fill threshold.",
-        "Add a route-view page showing the optimised collection path for the day's full bins.",
+    {label:"Foundation", title:"Dataset & architecture design",
+      steps:["Source public waste-classification datasets (TrashNet, Kaggle garbage-classification) covering recyclable, organic, and hazardous categories.",
+        "Set up a TensorFlow/Keras environment and study transfer learning with a pretrained CNN (MobileNet/ResNet).",
+        "Design the system architecture: image upload -> classification -> sorting guidance, and crowdsourced report -> route engine.",
+        "Sketch the mobile-friendly web app covering the classifier screen and the citizen bin-report screen."]},
+    {label:"Core Build", title:"Classification model & reporting backend",
+      steps:["Fine-tune a pretrained CNN on the waste-classification dataset to sort uploaded images into disposal categories.",
+        "Build an in-app guidance module explaining correct disposal for each detected category.",
+        "Build a Flask backend allowing citizens to submit a 'bin full' report with location, replacing physical fill-sensors.",
+        "Store crowdsourced reports with timestamp and location in a database for route planning."]},
+    {label:"Integration", title:"Route optimisation & dashboard",
+      steps:["Implement a nearest-neighbour/greedy route-optimisation algorithm ordering bins reported as full for a collection run.",
+        "Integrate a free-tier maps API to visualise reported bin locations and the suggested collection route.",
+        "Build a React dashboard for collection staff showing today's optimised route and report-volume trends.",
         "Add a simple driver-facing mobile view listing today's stops in order."]},
     {label:"Finish Line", title:"Testing & documentation",
-      steps:["Test the physical prototype by simulating bins filling up and verifying correct alerting.",
-        "Validate route optimisation against a manually planned route for time/distance savings.",
-        "Document hardware wiring, algorithm logic, and cost estimates for scaling to a real locality.",
-        "Prepare the final report and a live demo of sensor-to-dashboard-to-route flow."]}
+      steps:["Evaluate classifier accuracy on a held-out test set and report confusion-matrix results per category.",
+        "Simulate a batch of crowdsourced bin reports to validate route-optimisation output against a manual route.",
+        "Deploy both the classifier app and the route dashboard on a free-tier host for a live demo.",
+        "Prepare the final report covering model evaluation, system architecture, and cost-free scalability notes."]}
   ]
 },
 {
